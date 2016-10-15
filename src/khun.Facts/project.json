@@ -1,4 +1,7 @@
 {
+  "runtimes": {
+    "osx.10.11-x64": {}
+  },
   "version": "1.0.0-*",
   "buildOptions": {
     "debugType": "portable"

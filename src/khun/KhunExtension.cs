@@ -1,4 +1,5 @@
-﻿using System; 
+﻿using System;
+using System.Text.RegularExpressions;
 
 namespace GreatFriends.Khun {
   public static class KhunExtension {
@@ -16,6 +17,11 @@ namespace GreatFriends.Khun {
         "อ."
       };
 
+    private static string[] vowels = new string[] {
+      "า"
+    };
+
+    private const string khun = "คุณ";
 
     public static string AsKhun(this string name) {
 
@@ -28,8 +34,19 @@ namespace GreatFriends.Khun {
       string[] parts = name.Split(new char[] { ' ' },
         StringSplitOptions.RemoveEmptyEntries);
 
-      if (parts[0].StartsWith("คุณ")) {
-        return string.Join(" ", parts);
+      if (parts[0].StartsWith(khun)) {
+        Regex regex = new Regex(Regex.Escape(khun));
+        string nextToKhun = regex.Replace(parts[0], string.Empty, 1);
+        bool nextToKhunIsVowel = false;
+        for (int i = 0; i < vowels.Length; i++) {
+          if (nextToKhun.StartsWith(vowels[i])) {
+            nextToKhunIsVowel = true;
+            break;
+          }
+        }
+        if (!nextToKhunIsVowel) {
+          return string.Join(" ", parts);
+        }
       }
 
       for (int i = 0; i < prefixes.Length; i++) {
